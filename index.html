@@ -159,7 +159,7 @@
 
   <footer class="max-w-4xl mx-auto px-4 pb-10 text-center text-slate-400">
     <hr class="border-slate-800 mb-4" />
-    <p>© <span id="year"></span> Kuiz Skor Ganti Gaji · Lisa × Sukor</p>
+    <p>© <span id="year"></span> Kuiz Skor Ganti Gaji · Dibangunkan oleh Lisa (ChatGPT) · Powered by Sukor Rija Legacy</p>
   </footer>
 
   <script>
@@ -236,47 +236,4 @@
       el('sasaran').textContent = fmtRM(sasaran);
       el('jurang').textContent = fmtRM(jurang);
       el('badgeKategori').textContent = kategori;
-      el('badgeKategori').className = 'inline-block rounded-full px-3 py-1 text-sm font-medium ' + (kategori==='Kritikal' ? 'bg-red-700/40 text-red-200' : kategori==='Mantap' ? 'bg-emerald-700/40 text-emerald-200' : 'bg-yellow-700/40 text-yellow-200');
-
-      // Update langkah list
-      const ul = el('langkahList');
-      ul.innerHTML = '';
-      langkah.slice(0,5).forEach(txt=>{ const li=document.createElement('li'); li.textContent=txt; ul.appendChild(li); });
-
-      // Cache ringkasan untuk salin/share
-      window.__ringkasan = {
-        skor, kategori, label, sasaran, jurang, gaji, tanggungan, bulanDana, hutang, coverSedia, bajet, tempoh
-      };
-    }
-
-    function salinRingkasan(){
-      const r = window.__ringkasan; if(!r){ alert('Kira dulu ya.'); return; }
-      const teks = `Kuiz Skor Ganti Gaji\n\nSkor: ${r.skor} (${r.kategori})\nSasaran perlindungan: ${fmtRM(r.sasaran)}\nJurang perlindungan: ${fmtRM(r.jurang)}\n\nRingkas input: Gaji ${fmtRM(r.gaji)}, Tanggung ${r.tanggungan}, Dana ${r.bulanDana} bulan, Hutang ${fmtRM(r.hutang)}, Cover sedia ada ${fmtRM(r.coverSedia)}, Tempoh ${r.tempoh} tahun.\n\nDibangunkan oleh Lisa (ChatGPT). Powered by Sukor Rija Legacy.`;
-      navigator.clipboard.writeText(teks).then(()=>{
-        alert('Ringkasan disalin. Boleh tampal ke WhatsApp/FB.');
-      });
-    }
-
-    function shareWeb(){
-      const r = window.__ringkasan; if(!r){ alert('Kira dulu ya.'); return; }
-      const text = `Skor Ganti Gaji saya: ${r.skor} (${r.kategori}). Jurang ~ ${fmtRM(r.jurang)}.`;
-      const url = location.href;
-      if(navigator.share){
-        navigator.share({ title: 'Kuiz Skor Ganti Gaji', text, url }).catch(()=>{});
-      } else {
-        const link = `https://wa.me/?text=${encodeURIComponent(text+' '+url)}`;
-        window.open(link, '_blank');
-      }
-    }
-
-    // Event listeners
-    el('btnKira').addEventListener('click', kira);
-    el('btnSalin').addEventListener('click', salinRingkasan);
-    el('btnShare').addEventListener('click', shareWeb);
-    el('btnPrint').addEventListener('click', ()=>window.print());
-
-    // Reset behaviour: just reload
-    el('btnReset').addEventListener('click', (e)=>{ e.preventDefault(); location.reload(); });
-  </script>
-</body>
-</html>
+      el('badgeKategori').className = 'inline-block rounded-full px-3 py-1 text-sm font-medium ' + (kategori==='Kritikal' ? 'bg-red-700/40 text-red-200' : kategori==='Mantap' ? 'bg
