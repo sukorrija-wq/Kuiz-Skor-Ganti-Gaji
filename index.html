@@ -13,15 +13,16 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E💼%3C/text%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .card{ @apply bg-slate-900/60 backdrop-blur rounded-2xl shadow-xl border border-slate-800; }
-    .btn{ @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2 font-medium shadow hover:shadow-md transition active:scale-[.99]; }
-    .btn-primary{ @apply bg-blue-600 text-white hover:bg-blue-700; }
-    .btn-ghost{ @apply bg-slate-800 text-slate-200 hover:bg-slate-700; }
-    .input{ @apply w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400; }
-    .label{ @apply text-sm text-slate-300; }
-    .subtle{ @apply text-xs text-slate-400; }
-    .title{ @apply text-xl md:text-2xl font-semibold text-white; }
-    .kpi{ @apply text-2xl md:text-3xl font-bold; }
+    /* Guna CSS biasa supaya serasi di GitHub Pages (tanpa build Tailwind) */
+    .card{ background: rgba(15,23,42,.6); backdrop-filter: blur(6px); border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,.35); border:1px solid #0b1220; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border-radius:1rem; padding:.5rem 1rem; font-weight:600; box-shadow:0 4px 10px rgba(0,0,0,.2); }
+    .btn-primary{ background:#2563eb; color:#fff; }
+    .btn-ghost{ background:#0b1220; color:#e5e7eb; }
+    .input{ width:100%; border-radius:.75rem; background:#0b1220; border:1px solid #334155; padding:.5rem .75rem; color:#e5e7eb; }
+    .label{ font-size:.9rem; color:#cbd5e1; }
+    .subtle{ font-size:.8rem; color:#94a3b8; }
+    .title{ font-size:1.25rem; font-weight:700; color:#fff; }
+    .kpi{ font-size:1.6rem; font-weight:800; }
   </style>
 </head>
 <body class="bg-gradient-to-b from-slate-950 to-slate-900 text-slate-100 min-h-screen">
@@ -45,28 +46,28 @@
       <div class="grid md:grid-cols-2 gap-4 md:gap-6">
         <div>
           <label class="label" for="gaji">Gaji bersih bulanan (RM)</label>
-          <input class="input" id="gaji" type="number" min="0" step="50" placeholder="contoh 3000" />
+          <input class="input" id="gaji" type="text" inputmode="decimal" placeholder="contoh 3000 atau 3,000" />
           <p class="subtle mt-1">Anggaran selepas potongan tetap.</p>
         </div>
         <div>
           <label class="label" for="tanggungan">Bilangan tanggungan</label>
-          <input class="input" id="tanggungan" type="number" min="0" step="1" placeholder="0,1,2,3…" />
+          <input class="input" id="tanggungan" type="text" inputmode="numeric" placeholder="0,1,2,3…" />
         </div>
         <div>
           <label class="label" for="bulanDana">Dana kecemasan (bulan perbelanjaan)</label>
-          <input class="input" id="bulanDana" type="number" min="0" step="1" placeholder="0–12" />
+          <input class="input" id="bulanDana" type="text" inputmode="numeric" placeholder="0–12" />
         </div>
         <div>
           <label class="label" for="hutang">Baki hutang utama (RM)</label>
-          <input class="input" id="hutang" type="number" min="0" step="1000" placeholder="contoh 50000" />
+          <input class="input" id="hutang" type="text" inputmode="decimal" placeholder="contoh 50000" />
         </div>
         <div>
           <label class="label" for="coverSedia">Perlindungan pendapatan/hibah sedia ada (RM)</label>
-          <input class="input" id="coverSedia" type="number" min="0" step="1000" placeholder="contoh 100000" />
+          <input class="input" id="coverSedia" type="text" inputmode="decimal" placeholder="contoh 100000" />
         </div>
         <div>
           <label class="label" for="bajet">Bajet bulanan yang selesa (RM)</label>
-          <input class="input" id="bajet" type="number" min="0" step="10" placeholder="contoh 90" />
+          <input class="input" id="bajet" type="text" inputmode="decimal" placeholder="contoh 90" />
         </div>
         <div>
           <label class="label" for="tempoh">Tempoh ganti gaji yang diingini (tahun)</label>
@@ -146,7 +147,7 @@
               <a class="btn btn-primary" href="https://wa.me/60169514414?text=Hai%20Sukor%2C%20saya%20nak%20semak%20kuiz%20Skor%20Ganti%20Gaji%20saya." target="_blank" rel="noopener">WhatsApp Sukor</a>
               <button class="btn btn-ghost" id="btnSalin">Salin Ringkasan</button>
             </div>
-            <p class="subtle mt-3">Dibangunkan oleh Lisa (ChatGPT). Powered by <span class="font-semibold">Sukor Rija Legacy</span>.</p>
+            <p class="subtle mt-3">Powered by <span class="font-semibold">Sukor Rija Legacy</span>.</p>
           </div>
         </div>
 
@@ -159,69 +160,56 @@
 
   <footer class="max-w-4xl mx-auto px-4 pb-10 text-center text-slate-400">
     <hr class="border-slate-800 mb-4" />
-    <p>© <span id="year"></span> Kuiz Skor Ganti Gaji · Dibangunkan oleh Lisa (ChatGPT) · Powered by Sukor Rija Legacy</p>
+    <p>© <span id="year"></span> Kuiz Skor Ganti Gaji · Powered by Sukor Rija Legacy</p>
   </footer>
 
   <script>
     const fmtRM = (n) => new Intl.NumberFormat('ms-MY', { style: 'currency', currency: 'MYR', maximumFractionDigits: 0 }).format(Math.max(0, Math.round(n||0)));
-
     const el = (id) => document.getElementById(id);
     const year = new Date().getFullYear();
     el('year').textContent = year;
 
+    // Parse nombor yang mungkin ada koma/ruang
+    const num = (id) => {
+      const raw = (el(id).value || '').toString().replace(/[\s,]/g,'');
+      const v = parseFloat(raw);
+      return isNaN(v) ? 0 : v;
+    };
+
     function kira(){
-      const gaji = +el('gaji').value || 0;
-      const tanggungan = +el('tanggungan').value || 0;
-      const bulanDana = +el('bulanDana').value || 0;
-      const hutang = +el('hutang').value || 0;
-      const coverSedia = +el('coverSedia').value || 0;
-      const bajet = +el('bajet').value || 0;
+      const gaji = num('gaji');
+      const tanggungan = num('tanggungan');
+      const bulanDana = num('bulanDana');
+      const hutang = num('hutang');
+      const coverSedia = num('coverSedia');
+      const bajet = num('bajet');
       const tempoh = +el('tempoh').value || 5;
       const pendapatanSampingan = el('pendapatanSampingan').value;
       const risiko = el('risikoKerja').value;
 
-      if(!gaji){ el('msg').textContent = 'Masukkan gaji bersih bulanan untuk mula kira.'; return; }
+      if(!gaji){ el('msg').textContent = 'Masukkan gaji bersih bulanan dan tekan Kira Skor.'; return; }
       el('msg').textContent = '';
 
-      // SASARAN PERLINDUNGAN: (gaji x bulan tempoh) + hutang - (dana kecemasan x gaji) 
       const bulan = tempoh * 12;
       const sasaranKasar = (gaji * bulan) + hutang - (bulanDana * gaji);
       const sasaran = Math.max(0, sasaranKasar);
-
-      // JURANG: sasaran - perlindungan sedia ada
       const jurang = Math.max(0, sasaran - coverSedia);
 
-      // SKOR: bermula dari komponen bajet & asas kewangan
-      // Nisbah bajet kepada 10% gaji memberi 0–60 mata
-      const nisbahBajet = gaji ? Math.min(1, (bajet / (gaji*0.10))) : 0; // capped at 1
+      const nisbahBajet = gaji ? Math.min(1, (bajet / (gaji*0.10))) : 0; // 0–1
       let skor = Math.round(nisbahBajet * 60);
-
-      // Dana kecemasan <3 bulan: -10; 3–6: +0; >6: +5
       if(bulanDana < 3) skor -= 10; else if(bulanDana > 6) skor += 5;
-
-      // Tanggungan ramai meningkatkan keperluan → tolak sedikit jika tiada perlindungan
       if(tanggungan >= 3 && coverSedia < (gaji*12)) skor -= 5;
-
-      // Pendapatan sampingan bantu: +5
       if(pendapatanSampingan === 'ada') skor += 5;
-
-      // Risiko kerja: sederhana -3, tinggi -6
       if(risiko === 'sederhana') skor -= 3; else if(risiko === 'tinggi') skor -= 6;
-
-      // Jurang relatif sangat besar → kurangkan skor sedikit
       const nisbahJurang = sasaran ? Math.min(1, jurang / sasaran) : 0;
       if(nisbahJurang > 0.66) skor -= 6; else if(nisbahJurang > 0.33) skor -= 3;
-
-      // Kekang dalam 0–100
       skor = Math.max(0, Math.min(100, skor));
 
-      // Kategori & label
       let kategori = 'Perlu Diperkasa';
       let label = 'Sedang';
       if(skor < 40){ kategori = 'Kritikal'; label = 'Banyak ruang penambahbaikan'; }
       else if(skor >= 70){ kategori = 'Mantap'; label = 'Arah yang baik, teruskan tingkatkan perlindungan'; }
 
-      // Susunan langkah ikut keadaan
       const langkah = [];
       if(bulanDana < 3) langkah.push('Top-up dana kecemasan sehingga 3–6 bulan.');
       if(jurang > 0) langkah.push('Rancang pelan ganti gaji untuk kecilkan jurang '+fmtRM(jurang)+'.');
@@ -229,11 +217,54 @@
       if(tanggungan >= 1) langkah.push('Utamakan perlindungan pencari nafkah terlebih dahulu.');
       if(bajet > 0) langkah.push('Tetapkan bajet bulanan konsisten ('+fmtRM(bajet)+').');
 
-      // Render
       el('hasilSection').classList.remove('hidden');
       el('skor').textContent = skor;
       el('labelSkor').textContent = label;
       el('sasaran').textContent = fmtRM(sasaran);
       el('jurang').textContent = fmtRM(jurang);
       el('badgeKategori').textContent = kategori;
-      el('badgeKategori').className = 'inline-block rounded-full px-3 py-1 text-sm font-medium ' + (kategori==='Kritikal' ? 'bg-red-700/40 text-red-200' : kategori==='Mantap' ? 'bg
+      el('badgeKategori').className = 'inline-block rounded-full px-3 py-1 text-sm font-medium ' + (kategori==='Kritikal' ? 'bg-red-700/40 text-red-200' : kategori==='Mantap' ? 'bg-emerald-700/40 text-emerald-200' : 'bg-yellow-700/40 text-yellow-200');
+
+      const ul = el('langkahList');
+      ul.innerHTML = '';
+      langkah.slice(0,5).forEach(txt=>{ const li=document.createElement('li'); li.textContent=txt; ul.appendChild(li); });
+
+      window.__ringkasan = { skor, kategori, label, sasaran, jurang, gaji, tanggungan, bulanDana, hutang, coverSedia, bajet, tempoh };
+    }
+
+    function salinRingkasan(){
+      const r = window.__ringkasan; if(!r){ alert('Kira dulu ya.'); return; }
+      const teks = `Kuiz Skor Ganti Gaji\n\nSkor: ${r.skor} (${r.kategori})\nSasaran perlindungan: ${fmtRM(r.sasaran)}\nJurang perlindungan: ${fmtRM(r.jurang)}\n\nRingkas input: Gaji ${fmtRM(r.gaji)}, Tanggung ${r.tanggungan}, Dana ${r.bulanDana} bulan, Hutang ${fmtRM(r.hutang)}, Cover sedia ada ${fmtRM(r.coverSedia)}, Tempoh ${r.tempoh} tahun.\n\nPowered by Sukor Rija Legacy.`;
+      navigator.clipboard.writeText(teks).then(()=>{ alert('Ringkasan disalin. Boleh tampal ke WhatsApp/FB.'); });
+    }
+
+    function shareWeb(){
+      const r = window.__ringkasan; if(!r){ alert('Kira dulu ya.'); return; }
+      const text = `Skor Ganti Gaji saya: ${r.skor} (${r.kategori}). Jurang ~ ${fmtRM(r.jurang)}.`;
+      const url = location.href;
+      if(navigator.share){ navigator.share({ title: 'Kuiz Skor Ganti Gaji', text, url }).catch(()=>{}); }
+      else { window.open(`https://wa.me/?text=${encodeURIComponent(text+' '+url)}`, '_blank'); }
+    }
+
+    // Event listeners
+    el('btnKira').addEventListener('click', kira);
+    el('btnSalin').addEventListener('click', salinRingkasan);
+    el('btnShare').addEventListener('click', shareWeb);
+    el('btnPrint').addEventListener('click', ()=>window.print());
+
+    // Auto-kira bila tekan Enter dalam mana-mana input
+    document.querySelectorAll('input, select').forEach(inp=>{
+      inp.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); kira(); }});
+    });
+
+    // Auto-kira bila gaji diisi
+    document.querySelectorAll('#gaji,#tanggungan,#bulanDana,#hutang,#coverSedia,#bajet,#tempoh,#pendapatanSampingan,#risikoKerja').forEach(i=>{
+      i.addEventListener('input', ()=>{ if(num('gaji')>0) kira(); });
+      i.addEventListener('change', ()=>{ if(num('gaji')>0) kira(); });
+    });
+
+    // Reset behaviour: just reload
+    el('btnReset').addEventListener('click', (e)=>{ e.preventDefault(); location.reload(); });
+  </script>
+</body>
+</html>
