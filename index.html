@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>Kuiz Skor Ganti Gaji</title>
+  <meta name="description" content="Kuiz ringkas untuk menilai kesiapan ganti gaji keluarga dan mengira jurang perlindungan." />
+  <meta property="og:title" content="Kuiz Skor Ganti Gaji" />
+  <meta property="og:description" content="Nilai tahap kesiapan anda & ketahui jurang perlindungan keluarga." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/1f2937/e5e7eb&text=Kuiz+Skor+Ganti+Gaji" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E💼%3C/text%3E%3C/svg%3E">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .card{ @apply bg-slate-900/60 backdrop-blur rounded-2xl shadow-xl border border-slate-800; }
+    .btn{ @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2 font-medium shadow hover:shadow-md transition active:scale-[.99]; }
+    .btn-primary{ @apply bg-blue-600 text-white hover:bg-blue-700; }
+    .btn-ghost{ @apply bg-slate-800 text-slate-200 hover:bg-slate-700; }
+    .input{ @apply w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400; }
+    .label{ @apply text-sm text-slate-300; }
+    .subtle{ @apply text-xs text-slate-400; }
+    .title{ @apply text-xl md:text-2xl font-semibold text-white; }
+    .kpi{ @apply text-2xl md:text-3xl font-bold; }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-slate-950 to-slate-900 text-slate-100 min-h-screen">
+  <header class="max-w-4xl mx-auto px-4 py-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold">Kuiz Skor Ganti Gaji</h1>
+        <p class="text-slate-300">Nilai kesiapan keluarga & kira anggaran <span class="font-semibold">jurang perlindungan</span> — cepat, ringkas, tanpa data sensitif.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btnShare" class="btn btn-ghost" type="button">Kongsi</button>
+        <button id="btnPrint" class="btn btn-ghost" type="button">Cetak / PDF</button>
+        <a id="btnReset" class="btn btn-ghost" href="#">Reset</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 pb-24">
+    <section class="card p-5 md:p-6">
+      <h2 class="title mb-4">Maklumat Asas</h2>
+      <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+        <div>
+          <label class="label" for="gaji">Gaji bersih bulanan (RM)</label>
+          <input class="input" id="gaji" type="number" min="0" step="50" placeholder="contoh 3000" />
+          <p class="subtle mt-1">Anggaran selepas potongan tetap.</p>
+        </div>
+        <div>
+          <label class="label" for="tanggungan">Bilangan tanggungan</label>
+          <input class="input" id="tanggungan" type="number" min="0" step="1" placeholder="0,1,2,3…" />
+        </div>
+        <div>
+          <label class="label" for="bulanDana">Dana kecemasan (bulan perbelanjaan)</label>
+          <input class="input" id="bulanDana" type="number" min="0" step="1" placeholder="0–12" />
+        </div>
+        <div>
+          <label class="label" for="hutang">Baki hutang utama (RM)</label>
+          <input class="input" id="hutang" type="number" min="0" step="1000" placeholder="contoh 50000" />
+        </div>
+        <div>
+          <label class="label" for="coverSedia">Perlindungan pendapatan/hibah sedia ada (RM)</label>
+          <input class="input" id="coverSedia" type="number" min="0" step="1000" placeholder="contoh 100000" />
+        </div>
+        <div>
+          <label class="label" for="bajet">Bajet bulanan yang selesa (RM)</label>
+          <input class="input" id="bajet" type="number" min="0" step="10" placeholder="contoh 90" />
+        </div>
+        <div>
+          <label class="label" for="tempoh">Tempoh ganti gaji yang diingini (tahun)</label>
+          <select id="tempoh" class="input">
+            <option value="3">3 tahun (minimum)</option>
+            <option value="5" selected>5 tahun (disaran)</option>
+            <option value="7">7 tahun</option>
+            <option value="10">10 tahun</option>
+          </select>
+        </div>
+        <div>
+          <label class="label" for="pendapatanSampingan">Ada pendapatan sampingan stabil?</label>
+          <select id="pendapatanSampingan" class="input">
+            <option value="tiada" selected>Tiada</option>
+            <option value="ada">Ada (≥ RM300/bulan)</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="label" for="risikoKerja">Pendedahan risiko kerja/harian</label>
+          <select id="risikoKerja" class="input">
+            <option value="rendah" selected>Rendah (pejabat/remote)</option>
+            <option value="sederhana">Sederhana (memandu kerap/kerja lapangan ringan)</option>
+            <option value="tinggi">Tinggi (tapak binaan/kerja fizikal/berisiko)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <button id="btnKira" class="btn btn-primary" type="button">Kira Skor</button>
+        <span id="msg" class="text-slate-400 text-sm"></span>
+      </div>
+    </section>
+
+    <section id="hasilSection" class="mt-6 hidden">
+      <div class="card p-5 md:p-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h3 class="title">Hasil & Saranan</h3>
+            <p class="subtle">Keputusan berdasarkan input anda. Ini bukan tawaran/ilustrasi polisi.</p>
+          </div>
+          <div class="text-right">
+            <div id="badgeKategori" class="inline-block rounded-full px-3 py-1 text-sm font-medium bg-slate-800 text-slate-200">Kategori</div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 md:gap-6 mt-6">
+          <div class="card p-4">
+            <div class="text-slate-400 text-sm">Skor Kesiapan</div>
+            <div id="skor" class="kpi">0</div>
+            <div id="labelSkor" class="text-slate-300">–</div>
+          </div>
+          <div class="card p-4">
+            <div class="text-slate-400 text-sm">Sasaran Perlindungan</div>
+            <div id="sasaran" class="kpi">RM0</div>
+            <div class="text-slate-300">Jumlah perlindungan menyamai tempoh ganti gaji + hutang − dana sedia ada.</div>
+          </div>
+          <div class="card p-4">
+            <div class="text-slate-400 text-sm">Jurang Perlindungan</div>
+            <div id="jurang" class="kpi">RM0</div>
+            <div class="text-slate-300">Anggaran jurang selepas ambil kira perlindungan sedia ada.</div>
+          </div>
+        </div>
+
+        <div class="mt-6 grid md:grid-cols-2 gap-4 md:gap-6">
+          <div class="card p-4">
+            <h4 class="font-semibold mb-2">Saranan Tindakan 3 Langkah</h4>
+            <ol class="list-decimal pl-5 space-y-1 text-slate-200" id="langkahList">
+              <li>Lengkapkan dana kecemasan sekurang-kurangnya 3–6 bulan.</li>
+              <li>Utamakan pelan ganti gaji sehingga jurang berkurang.</li>
+              <li>Semak semula perlindungan setiap 12 bulan/selepas milestone.</li>
+            </ol>
+          </div>
+          <div class="card p-4">
+            <h4 class="font-semibold mb-2">CTA</h4>
+            <p class="text-slate-200 mb-3">Mahukan semakan percuma & cadangan ikut bajet anda?</p>
+            <div class="flex flex-wrap gap-2">
+              <a class="btn btn-primary" href="https://wa.me/60169514414?text=Hai%20Sukor%2C%20saya%20nak%20semak%20kuiz%20Skor%20Ganti%20Gaji%20saya." target="_blank" rel="noopener">WhatsApp Sukor</a>
+              <button class="btn btn-ghost" id="btnSalin">Salin Ringkasan</button>
+            </div>
+            <p class="subtle mt-3">Dibangunkan oleh Lisa (ChatGPT). Powered by <span class="font-semibold">Sukor Rija Legacy</span>.</p>
+          </div>
+        </div>
+
+        <div class="mt-6 text-xs text-slate-400 leading-relaxed">
+          <p><strong>Penafian:</strong> Ini alat pendidikan umum. Bukan nasihat kewangan, bukan sebut harga, dan tertakluk kepada terma & proses underwriting. Nilai dan saranan adalah anggaran bagi membantu perbincangan awal.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-4 pb-10 text-center text-slate-400">
+    <hr class="border-slate-800 mb-4" />
+    <p>© <span id="year"></span> Kuiz Skor Ganti Gaji · Lisa × Sukor</p>
+  </footer>
+
+  <script>
+    const fmtRM = (n) => new Intl.NumberFormat('ms-MY', { style: 'currency', currency: 'MYR', maximumFractionDigits: 0 }).format(Math.max(0, Math.round(n||0)));
+
+    const el = (id) => document.getElementById(id);
+    const year = new Date().getFullYear();
+    el('year').textContent = year;
+
+    function kira(){
+      const gaji = +el('gaji').value || 0;
+      const tanggungan = +el('tanggungan').value || 0;
+      const bulanDana = +el('bulanDana').value || 0;
+      const hutang = +el('hutang').value || 0;
+      const coverSedia = +el('coverSedia').value || 0;
+      const bajet = +el('bajet').value || 0;
+      const tempoh = +el('tempoh').value || 5;
+      const pendapatanSampingan = el('pendapatanSampingan').value;
+      const risiko = el('risikoKerja').value;
+
+      if(!gaji){ el('msg').textContent = 'Masukkan gaji bersih bulanan untuk mula kira.'; return; }
+      el('msg').textContent = '';
+
+      // SASARAN PERLINDUNGAN: (gaji x bulan tempoh) + hutang - (dana kecemasan x gaji) 
+      const bulan = tempoh * 12;
+      const sasaranKasar = (gaji * bulan) + hutang - (bulanDana * gaji);
+      const sasaran = Math.max(0, sasaranKasar);
+
+      // JURANG: sasaran - perlindungan sedia ada
+      const jurang = Math.max(0, sasaran - coverSedia);
+
+      // SKOR: bermula dari komponen bajet & asas kewangan
+      // Nisbah bajet kepada 10% gaji memberi 0–60 mata
+      const nisbahBajet = gaji ? Math.min(1, (bajet / (gaji*0.10))) : 0; // capped at 1
+      let skor = Math.round(nisbahBajet * 60);
+
+      // Dana kecemasan <3 bulan: -10; 3–6: +0; >6: +5
+      if(bulanDana < 3) skor -= 10; else if(bulanDana > 6) skor += 5;
+
+      // Tanggungan ramai meningkatkan keperluan → tolak sedikit jika tiada perlindungan
+      if(tanggungan >= 3 && coverSedia < (gaji*12)) skor -= 5;
+
+      // Pendapatan sampingan bantu: +5
+      if(pendapatanSampingan === 'ada') skor += 5;
+
+      // Risiko kerja: sederhana -3, tinggi -6
+      if(risiko === 'sederhana') skor -= 3; else if(risiko === 'tinggi') skor -= 6;
+
+      // Jurang relatif sangat besar → kurangkan skor sedikit
+      const nisbahJurang = sasaran ? Math.min(1, jurang / sasaran) : 0;
+      if(nisbahJurang > 0.66) skor -= 6; else if(nisbahJurang > 0.33) skor -= 3;
+
+      // Kekang dalam 0–100
+      skor = Math.max(0, Math.min(100, skor));
+
+      // Kategori & label
+      let kategori = 'Perlu Diperkasa';
+      let label = 'Sedang';
+      if(skor < 40){ kategori = 'Kritikal'; label = 'Banyak ruang penambahbaikan'; }
+      else if(skor >= 70){ kategori = 'Mantap'; label = 'Arah yang baik, teruskan tingkatkan perlindungan'; }
+
+      // Susunan langkah ikut keadaan
+      const langkah = [];
+      if(bulanDana < 3) langkah.push('Top-up dana kecemasan sehingga 3–6 bulan.');
+      if(jurang > 0) langkah.push('Rancang pelan ganti gaji untuk kecilkan jurang '+fmtRM(jurang)+'.');
+      langkah.push('Semak polisi sedia ada & kemas kini penama/hibah.');
+      if(tanggungan >= 1) langkah.push('Utamakan perlindungan pencari nafkah terlebih dahulu.');
+      if(bajet > 0) langkah.push('Tetapkan bajet bulanan konsisten ('+fmtRM(bajet)+').');
+
+      // Render
+      el('hasilSection').classList.remove('hidden');
+      el('skor').textContent = skor;
+      el('labelSkor').textContent = label;
+      el('sasaran').textContent = fmtRM(sasaran);
+      el('jurang').textContent = fmtRM(jurang);
+      el('badgeKategori').textContent = kategori;
+      el('badgeKategori').className = 'inline-block rounded-full px-3 py-1 text-sm font-medium ' + (kategori==='Kritikal' ? 'bg-red-700/40 text-red-200' : kategori==='Mantap' ? 'bg-emerald-700/40 text-emerald-200' : 'bg-yellow-700/40 text-yellow-200');
+
+      // Update langkah list
+      const ul = el('langkahList');
+      ul.innerHTML = '';
+      langkah.slice(0,5).forEach(txt=>{ const li=document.createElement('li'); li.textContent=txt; ul.appendChild(li); });
+
+      // Cache ringkasan untuk salin/share
+      window.__ringkasan = {
+        skor, kategori, label, sasaran, jurang, gaji, tanggungan, bulanDana, hutang, coverSedia, bajet, tempoh
+      };
+    }
+
+    function salinRingkasan(){
+      const r = window.__ringkasan; if(!r){ alert('Kira dulu ya.'); return; }
+      const teks = `Kuiz Skor Ganti Gaji\n\nSkor: ${r.skor} (${r.kategori})\nSasaran perlindungan: ${fmtRM(r.sasaran)}\nJurang perlindungan: ${fmtRM(r.jurang)}\n\nRingkas input: Gaji ${fmtRM(r.gaji)}, Tanggung ${r.tanggungan}, Dana ${r.bulanDana} bulan, Hutang ${fmtRM(r.hutang)}, Cover sedia ada ${fmtRM(r.coverSedia)}, Tempoh ${r.tempoh} tahun.\n\nDibangunkan oleh Lisa (ChatGPT). Powered by Sukor Rija Legacy.`;
+      navigator.clipboard.writeText(teks).then(()=>{
+        alert('Ringkasan disalin. Boleh tampal ke WhatsApp/FB.');
+      });
+    }
+
+    function shareWeb(){
+      const r = window.__ringkasan; if(!r){ alert('Kira dulu ya.'); return; }
+      const text = `Skor Ganti Gaji saya: ${r.skor} (${r.kategori}). Jurang ~ ${fmtRM(r.jurang)}.`;
+      const url = location.href;
+      if(navigator.share){
+        navigator.share({ title: 'Kuiz Skor Ganti Gaji', text, url }).catch(()=>{});
+      } else {
+        const link = `https://wa.me/?text=${encodeURIComponent(text+' '+url)}`;
+        window.open(link, '_blank');
+      }
+    }
+
+    // Event listeners
+    el('btnKira').addEventListener('click', kira);
+    el('btnSalin').addEventListener('click', salinRingkasan);
+    el('btnShare').addEventListener('click', shareWeb);
+    el('btnPrint').addEventListener('click', ()=>window.print());
+
+    // Reset behaviour: just reload
+    el('btnReset').addEventListener('click', (e)=>{ e.preventDefault(); location.reload(); });
+  </script>
+</body>
+</html>
